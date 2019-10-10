@@ -9,6 +9,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.commands.PistonsDown;
+import frc.robot.commands.PistonsUp;
+import frc.robot.commands.Rumble;
+import frc.robot.commands.Rumble.ControllerSide;
+import frc.robot.commands.Shoot;
 
 public class OI {
 
@@ -29,18 +35,100 @@ public class OI {
     public boolean lastRightTrig = false;
     public boolean lastLeftTrig = false;
 
-    public OI() {
-        // r_bump.whenPressed(new ShiftGear(DriveGear.LOW_GEAR));
-        // l_bump.whenPressed(new ShiftGear(DriveGear.HIGH_GEAR));
+    public enum ControllerMapMode {
+        FIRE, LOCKED, UNKNOWN
     }
 
+    public ControllerMapMode controllerMode = ControllerMapMode.LOCKED;
 
-    public void updatePeriodicCommands(){}
-       
-    public Joystick getJoystick() {
+    public OI() {
+        a_button.whenPressed(new PistonsUp());
+        b_button.whenPressed(new PistonsDown());
+        // x_button.whenPressed();
+        // y_button.whenPressed();
+        // left_middle.whenPressed();
+        right_middle.whenPressed(new Command(){
+            @Override
+            protected void initialize() {
+                System.out.println("Controller set to 'FIRE' mode");
+                controllerMode = ControllerMapMode.FIRE;
+            }
+
+            @Override
+            protected boolean isFinished() {
+                return true;
+            }
+        });
+    }
+
+    public boolean isRightTriggerPressed() {
+        double rightTrig = this.getJoystick().getRawAxis(3);
+        return rightTrig > 0.9;
+    }
+
+    public boolean isLeftTriggerPressed() {
+        double leftTrig = this.getJoystick().getRawAxis(2);
+        return leftTrig > 0.9;
+    }
+
+    public void updatePeriodicCommands(){
+        // if (lastRightTrig != isRightTriggerPressed()) {
+        //     // the right trigger changed state
+        //     lastRightTrig = isRightTriggerPressed();
+        //     if (lastRightTrig) {
+        //         // the right trigger is pressed
+        //     }
+        // }
+
+        // if (lastLeftTrig != isLeftTriggerPressed()) {
+        //     // the left trigger changed state
+        //     lastLeftTrig = isLeftTriggerPressed();
+        //     if (lastLeftTrig) {
+        //         // the left trigger is pressed
+        //         // new MoveGrabberAndElevator(ElevatorLevel.CARGOSHIP_TOP, GrabberPosition.EXTENDED, Grabber.MotorState.OFF).start();
+
+        //     }
+        // }
+
+        if (lastDpad != joy.getPOV()) {
+			switch (joy.getPOV()) {
+                case 0: { //*TOP
+                    break;
+                }
+                case 90: { //*RIGHT
+                    if (controllerMode == ControllerMapMode.FIRE) {
+                        System.out.println("Shooting right..");
+                        new Shoot(Robot.rightCannon);
+                        controllerMode = ControllerMapMode.LOCKED;
+                    } else {
+                        System.out.println("Can't fire. Rumbling");
+                        new Rumble(0.5, ControllerSide.BOTH);
+                    }
+                    break;
+                }
+                case 180: { //*BOTTOM
+                    break;
+                }
+                case 270: { //*LEFT
+                    if (controllerMode == ControllerMapMode.FIRE) {
+                        System.out.println("Shooting left..");
+                        new Shoot(Robot.leftCannon);
+                        controllerMode = ControllerMapMode.LOCKED;
+                    } else {
+                        System.out.println("Can't fire. Rumbling");
+                        new Rumble(0.5, ControllerSide.BOTH);
+                    }
+                    break;
+                }
+			}
+		}
+		lastDpad = joy.getPOV();
+    }
+
+	public Joystick getJoystick() {
         return joy;
     }
-
+    
     public double addDeadZone(double input) {
         if (Math.abs(input) <= .05)
             input = 0;

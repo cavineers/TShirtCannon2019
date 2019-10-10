@@ -43,4 +43,8 @@ public class Constants {
     
     // BEGIN EDITABLE
     // place all your constants here
+    public static final int kLeftCannonModule = 20;
+    public static final int kLeftCannonChannel = 6;
+    public static final int kRightCannonModule = 20;
+    public static final int kRightCannonChannel = 7;
 }

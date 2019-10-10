@@ -19,7 +19,10 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.lib.MathHelper;
+import frc.robot.subsystems.AnglePistons;
+import frc.robot.subsystems.Cannon;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.Constants;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -48,6 +51,11 @@ public class Robot extends TimedRobot {
     DigitalInput rightStart, leftStart, middleStart;
     AnalogInput favorCargoBayFront, favorCargoBaySide, favorRocket;
 
+    public static Cannon leftCannon;
+    public static Cannon rightCannon;
+
+    public static AnglePistons anglePistons;
+
     double posError;
     double posWant;
     double posGot;
@@ -69,34 +77,17 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         drivetrain = new DriveTrain();
 
-        // initialize gyro
-        gyro = new AHRS(SPI.Port.kMXP);
-
-        // start estimating position of the robot
-
         // initialize operator interface / controls
         oi = new OI();
 
-        // initialize sensors
-        gyro.zeroYaw();
-        gyro.reset();
-
-        // start up the led manager
-
-        // begin positional estimation
-
-        // start ensuring that vision coprocessor(s) have properly synchronized clocks
-        // clockSyncUpdater.startPeriodic(Constants.kClockSyncLoopTime); //TODO: uncomment if we use vision
-
         // Init and export profile to network tables
-        // dankDash = new DankDash();
-        // dankDash.setProfileLocation("testChassis19");
-        // dankDash.setProfileName("Test Chassis 2019");
-        // dankDash.export();
-        // dankDash.addListener();
+        dankDash = new DankDash();
+        dankDash.setProfileLocation("TShirtCannon");
+        dankDash.setProfileName("T-Shirt Cannon");
+        dankDash.export();
+        dankDash.addListener();
 
         LiveWindow.disableAllTelemetry();
-
 
         rightStart = new DigitalInput(0);
         middleStart = new DigitalInput(1);
@@ -107,9 +98,11 @@ public class Robot extends TimedRobot {
         favorCargoBaySide = new AnalogInput(1);
         favorRocket = new AnalogInput(2);
 
-        // SmartDashboard.putData(new DisableAutoOverride());
-		// SmartDashboard.putData(new OverrideAutoSelection("SMARTDASH"));
+        // Init Cannons
+        leftCannon = new Cannon(Constants.kLeftCannonModule, Constants.kLeftCannonChannel);
+        rightCannon = new Cannon(Constants.kRightCannonModule, Constants.kRightCannonChannel);
 
+        anglePistons = new AnglePistons();
 
         // Elevator
 
@@ -164,7 +157,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
-        // this.updateDankDash();
+        this.updateDankDash();
     }
 
     @Override

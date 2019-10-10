@@ -42,9 +42,7 @@ public class DriveTrain extends Subsystem {
         this.configTalons();
         leftMotor2.follow(leftMotor1);
         rightMotor2.follow(rightMotor1);
-        shiftingSol = new DoubleSolenoid(RobotMap.PCM1, RobotMap.driveShifter1, RobotMap.driveShifter2);
         this.setBrakeMode(false);
-        this.setDriveGear(DriveGear.LOW_GEAR); //shift into low gear
     }
 
     /**
@@ -53,32 +51,6 @@ public class DriveTrain extends Subsystem {
     @Override
     public void initDefaultCommand() {
         setDefaultCommand(new TankDriveWithJoystick());
-    }
-    
-    /**
-     * Set the current state of the gear shifting solenoid
-     * 
-     * @param gear: the desired gear to shift to
-     */
-    public void setDriveGear(DriveGear gear){
-        if (gear == DriveGear.LOW_GEAR) {
-            shiftingSol.set(DoubleSolenoid.Value.kReverse);
-        } else if (gear == DriveGear.HIGH_GEAR) {
-            shiftingSol.set(DoubleSolenoid.Value.kForward);
-        }
-    }
-    
-    /**
-     * Get the current drive gear of the robot
-     * 
-     * @return if the DriveTrain is in high or low gear
-     */
-    public DriveGear getDriveGear() {
-        if (shiftingSol.get() == DoubleSolenoid.Value.kReverse) {
-            return DriveGear.LOW_GEAR;
-        } else {
-            return DriveGear.HIGH_GEAR;
-        }
     }
     
     /**
