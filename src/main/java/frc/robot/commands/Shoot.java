@@ -7,22 +7,23 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class Shoot extends Command {
     private Cannon cannon;
+    private boolean fired;
 
 	public Shoot(Cannon cannon) {
         this.cannon = cannon;
+        this.fired = false;
 	}
 
 	protected void initialize() {
-        cannon.setOpen(true);
-		setTimeout(0.3);
+        setTimeout(0.3);
 	}
 
 	protected void execute() {
-
+        cannon.setOpen(true);
 	}
 
 	protected boolean isFinished() {
-		return isTimedOut();
+        return isTimedOut();
 	}
 
 	protected void end() {

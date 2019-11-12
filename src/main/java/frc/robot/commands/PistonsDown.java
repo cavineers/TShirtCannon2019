@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class PistonsDown extends Command {
 	public PistonsDown() {
-		Robot.anglePistons.setSolenoidState(false);
+		// Robot.anglePistons.setSolenoidState(false);
 	}
 	
 	@Override

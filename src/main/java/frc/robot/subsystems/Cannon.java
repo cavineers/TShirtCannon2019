@@ -7,7 +7,7 @@ public class Cannon extends Subsystem {
 	Solenoid sol;
 	
 	public Cannon(int moduleNum, int channel) {
-		sol = new Solenoid(moduleNum, channel);
+		sol = new Solenoid(channel);
     }
     
     public void initDefaultCommand() {

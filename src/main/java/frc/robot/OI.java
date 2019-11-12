@@ -8,13 +8,18 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.robot.commands.PistonsDown;
 import frc.robot.commands.PistonsUp;
 import frc.robot.commands.Rumble;
 import frc.robot.commands.Rumble.ControllerSide;
+import frc.robot.subsystems.AnglePistons;
+import frc.robot.Robot;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.TogglePistonsAngle;
 
 public class OI {
 
@@ -42,16 +47,36 @@ public class OI {
     public ControllerMapMode controllerMode = ControllerMapMode.LOCKED;
 
     public OI() {
-        a_button.whenPressed(new PistonsUp());
-        b_button.whenPressed(new PistonsDown());
+        a_button.whenPressed(new Command(){
+            @Override
+            protected void initialize() {
+                // TODO: If we wan't the ability to toggle while in fire mode
+                if (controllerMode == ControllerMapMode.LOCKED) {
+                    Robot.anglePistons.setSolenoidState(!(Robot.anglePistons.getSolenoidState()));
+                } else {
+                    System.out.println("Can't toggle pistons. In fire mode");
+                }
+            }
+
+            @Override
+            protected boolean isFinished() {
+                return true;
+            }
+        });
+        // b_button.whenPressed();
         // x_button.whenPressed();
         // y_button.whenPressed();
         // left_middle.whenPressed();
         right_middle.whenPressed(new Command(){
             @Override
             protected void initialize() {
-                System.out.println("Controller set to 'FIRE' mode");
-                controllerMode = ControllerMapMode.FIRE;
+                if (controllerMode == ControllerMapMode.FIRE) {
+                    System.out.println("Controller set to 'LOCKED' mode");
+                    controllerMode = ControllerMapMode.LOCKED;
+                } else {
+                    System.out.println("Controller set to 'FIRE' mode");
+                    controllerMode = ControllerMapMode.FIRE;
+                }
             }
 
             @Override
@@ -98,11 +123,15 @@ public class OI {
                 case 90: { //*RIGHT
                     if (controllerMode == ControllerMapMode.FIRE) {
                         System.out.println("Shooting right..");
-                        new Shoot(Robot.rightCannon);
+                        
                         controllerMode = ControllerMapMode.LOCKED;
+                        Robot.rightCannon.setOpen(true);
+                        Timer.delay(0.2); //! WAS 0.3
+                        Robot.rightCannon.setOpen(false);
+
                     } else {
-                        System.out.println("Can't fire. Rumbling");
-                        new Rumble(0.5, ControllerSide.BOTH);
+                        System.out.println("Can't fire. Controller locked");
+                        // new Rumble(0.5, ControllerSide.BOTH);
                     }
                     break;
                 }
@@ -112,11 +141,13 @@ public class OI {
                 case 270: { //*LEFT
                     if (controllerMode == ControllerMapMode.FIRE) {
                         System.out.println("Shooting left..");
-                        new Shoot(Robot.leftCannon);
+                        Robot.leftCannon.setOpen(true);
+                        Timer.delay(0.2); //! WAS 0.3
+                        Robot.leftCannon.setOpen(false);
                         controllerMode = ControllerMapMode.LOCKED;
                     } else {
-                        System.out.println("Can't fire. Rumbling");
-                        new Rumble(0.5, ControllerSide.BOTH);
+                        System.out.println("Can't fire. Controller locked");
+                        // new Rumble(0.5, ControllerSide.BOTH);
                     }
                     break;
                 }

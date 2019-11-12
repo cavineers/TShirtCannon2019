@@ -23,6 +23,7 @@ import frc.robot.subsystems.AnglePistons;
 import frc.robot.subsystems.Cannon;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.Constants;
+import frc.robot.RobotMap;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -89,61 +90,11 @@ public class Robot extends TimedRobot {
 
         LiveWindow.disableAllTelemetry();
 
-        rightStart = new DigitalInput(0);
-        middleStart = new DigitalInput(1);
-        leftStart = new DigitalInput(2);
-        
-
-        favorCargoBayFront = new AnalogInput(0);
-        favorCargoBaySide = new AnalogInput(1);
-        favorRocket = new AnalogInput(2);
-
         // Init Cannons
         leftCannon = new Cannon(Constants.kLeftCannonModule, Constants.kLeftCannonChannel);
         rightCannon = new Cannon(Constants.kRightCannonModule, Constants.kRightCannonChannel);
 
         anglePistons = new AnglePistons();
-
-        // Elevator
-
-        // Velocity loop
-        // SmartDashboard.putNumber("f-val", Constants.kFVelocityElevUp);
-        // SmartDashboard.putNumber("p-val", Constants.kPVelocityElev);
-        // SmartDashboard.putNumber("i-val", Constants.kIVelocityElev);
-        // SmartDashboard.putNumber("d-val", Constants.kDVelocityElev);
-        // SmartDashboard.putNumber("current-vel",
-        // elevator.getElevatorMotor().getEncoder().getVelocity());
-
-        // Position loop
-        // SmartDashboard.putNumber("f-val", Constants.kFPosElev);
-        // SmartDashboard.putNumber("p-val", Constants.kPPosElev);
-        // SmartDashboard.putNumber("i-val", Constants.kIPosElev);
-        // SmartDashboard.putNumber("d-val", Constants.kDPosElev);
-        // SmartDashboard.putNumber("current-pos",
-        // elevator.getElevatorMotor().getEncoder().getPosition());
-        // SmartDashboard.putNumber("position output: ", elevator.getPIDPosOutput());
-
-        // //Grabber
-        // SmartDashboard.putNumber("f-val", Constants.kGrabberVelF);
-        // SmartDashboard.putNumber("p-val", Constants.kGrabberVelP);
-        // SmartDashboard.putNumber("i-val", Constants.kGrabberVelI);
-        // SmartDashboard.putNumber("d-val", Constants.kGrabberVelD);
-        // SmartDashboard.putNumber("grabber-vel", grabber.getArmMotor().getEncoder().getVelocity());
-
-        // SmartDashboard.putNumber("f-val", Constants.kGrabberPosF);
-        // SmartDashboard.putNumber("p-val", Constants.kGrabberPosP);
-        // SmartDashboard.putNumber("i-val", Constants.kGrabberPosI);
-        // SmartDashboard.putNumber("d-val", Constants.kGrabberPosD);
-        // SmartDashboard.putNumber("grabber-pos", grabber.getArmMotor().getEncoder().getPosition());
-
-        //Tuning ball intake PID
-        // SmartDashboard.putNumber("f-val", Constants.kGrabberBallVelF);
-        // SmartDashboard.putNumber("p-val", Constants.kGrabberBallVelP);
-        // SmartDashboard.putNumber("i-val", Constants.kGrabberBallVelI);
-        // SmartDashboard.putNumber("d-val", Constants.kGrabberBallVelD);
-        // SmartDashboard.putNumber("wheel vel", grabber.getBallMotor().getSelectedSensorVelocity());
-
-
     }
 
     /**
@@ -244,6 +195,14 @@ public class Robot extends TimedRobot {
             lastUpdateTime = Robot.getCurrentTime();
             heartbeatValue++;
         }
+    }
+
+    public static void extendPistons() {
+        anglePistons.setSolenoidState(true);
+    }
+
+    public static void shrinkPistons() {
+        anglePistons.setSolenoidState(false);
     }
 
 }

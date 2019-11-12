@@ -14,28 +14,13 @@ package frc.robot;
  * floating around.
  */
 public class RobotMap {
-
-  // CAN IDs
-
-  //drive motors
-//   public static int rightDriveMotor1 = 1; //talon (cim) (40A)
-//   public static int rightDriveMotor2 = 2; //talon (cim) (40A)
-//   public static int leftDriveMotor1  = 7; //talon (cim) (40A)
-//   public static int leftDriveMotor2  = 4; //talon (cim) (40A)
-
-  //   TEST 2
-  public static int rightDriveMotor1 = 1; //talon (cim) (40A)
-  public static int rightDriveMotor2 = 2; //talon (cim) (40A)
-  public static int leftDriveMotor1  = 3; //talon (cim) (40A)
-  public static int leftDriveMotor2  = 4; //talon (cim) (40A)
+  public static int rightDriveMotor1 = 3; //talon (cim) (40A)
+  public static int rightDriveMotor2 = 4; //talon (cim) (40A)
+  public static int leftDriveMotor1  = 1; //talon (cim) (40A)
+  public static int leftDriveMotor2  = 2; //talon (cim) (40A)
 
   //pneumatics:
-
-  //PCM can IDs
   public static int PCM1 = 20;
 
   public static int PDP = 10;
-
-  //PCM devices:
-  
 }
