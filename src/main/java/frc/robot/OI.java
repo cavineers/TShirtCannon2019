@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.robot.commands.PistonsDown;
 import frc.robot.commands.PistonsUp;
-import frc.robot.commands.Rumble;
-import frc.robot.commands.Rumble.ControllerSide;
+// import frc.robot.commands.Rumble;
+// import frc.robot.commands.Rumble.ControllerSide;
 import frc.robot.subsystems.AnglePistons;
 import frc.robot.Robot;
 import frc.robot.commands.Shoot;
@@ -123,12 +123,13 @@ public class OI {
                 case 90: { //*RIGHT
                     if (controllerMode == ControllerMapMode.FIRE) {
                         System.out.println("Shooting right..");
-                        
-                        controllerMode = ControllerMapMode.LOCKED;
                         Robot.rightCannon.setOpen(true);
-                        Timer.delay(0.2); //! WAS 0.3
+                        System.out.println("Open");
+                        // Timer.delay(0.2); //! WAS 0.3
+                        System.out.println("Wait");
                         Robot.rightCannon.setOpen(false);
-
+                        System.out.println("Close");
+                        controllerMode = ControllerMapMode.LOCKED;
                     } else {
                         System.out.println("Can't fire. Controller locked");
                         // new Rumble(0.5, ControllerSide.BOTH);
@@ -142,8 +143,11 @@ public class OI {
                     if (controllerMode == ControllerMapMode.FIRE) {
                         System.out.println("Shooting left..");
                         Robot.leftCannon.setOpen(true);
-                        Timer.delay(0.2); //! WAS 0.3
+                        System.out.println("Open");
+                        // Timer.delay(0.2); //! WAS 0.3
+                        System.out.println("Wait");
                         Robot.leftCannon.setOpen(false);
+                        System.out.println("Close");
                         controllerMode = ControllerMapMode.LOCKED;
                     } else {
                         System.out.println("Can't fire. Controller locked");

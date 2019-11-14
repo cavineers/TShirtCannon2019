@@ -12,15 +12,14 @@ public class LEDManager {
     }
 
     Relay R_underglowColor, R_firing;
-    LEDMode underglowColor = LEDMode.SOLID_RED;
-    LEDMode firingColor = LEDMode.NORMAL;
+    LEDMode underglowColor = LEDMode.SOLID_RED, firingColor = LEDMode.NORMAL;
 
     public LEDManager () {
         R_underglowColor = new Relay(0);
         R_firing = new Relay(1);
         
         this.setUnderglowColor(LEDMode.SOLID_RED);
-        this.setFiringMode(LEDMode.FIRING_STRIPE);
+        this.setFiringMode(LEDMode.NORMAL);
     }
 
     public void setUnderglowColor(LEDMode color) {
@@ -47,5 +46,9 @@ public class LEDManager {
                 this.firingColor = LEDMode.NORMAL;
                 break;
         }
+    }
+
+    public LEDMode getUnderglowColor() {
+        return this.underglowColor;
     }
 }

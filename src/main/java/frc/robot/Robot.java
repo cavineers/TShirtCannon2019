@@ -138,7 +138,13 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        
+        // System.out.println("Shooting left..");
+        leftCannon.setOpen(true);
+        // System.out.println("Open");
+        // Timer.delay(0.2); //! WAS 0.3
+        // System.out.println("Wait");
+        // Robot.leftCannon.setOpen(false);
+        // System.out.println("Close");
     }
 
     /**
@@ -146,6 +152,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
+        leftCannon.setOpen(true);
         oi.updatePeriodicCommands();
         Scheduler.getInstance().run();
     }

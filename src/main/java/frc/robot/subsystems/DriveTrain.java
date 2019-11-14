@@ -71,7 +71,7 @@ public class DriveTrain extends Subsystem {
     public void drive(Joystick joy) {
         // System.out.println("left: " + this.leftMotor1.get() * 1023 / this.leftMotor1.getSelectedSensorVelocity());
         // System.out.println("right:" + this.leftMotor1.get() * 1023 / this.rightMotor1.getSelectedSensorVelocity());
-        this.drive(this.addDeadZone(-joy.getRawAxis(1)), this.addDeadZone(-joy.getRawAxis(4)));
+        this.drive(this.addDeadZone(joy.getRawAxis(1)), this.addDeadZone(-joy.getRawAxis(4)));
     }
     
     /**
