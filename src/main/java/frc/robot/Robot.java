@@ -7,23 +7,17 @@
 
 package frc.robot;
 
-import com.kauailabs.navx.frc.AHRS;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import frc.lib.MathHelper;
 import frc.robot.subsystems.AnglePistons;
 import frc.robot.subsystems.Cannon;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.Constants;
-import frc.robot.RobotMap;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -43,7 +37,6 @@ public class Robot extends TimedRobot {
     public static NetworkTable netTable;
     public static double heartbeatValue;
 
-    public static AHRS gyro;
     public static OI oi;
 
     public static boolean isAutoOverridden = false;
@@ -56,16 +49,6 @@ public class Robot extends TimedRobot {
     public static Cannon rightCannon;
 
     public static AnglePistons anglePistons;
-
-    double posError;
-    double posWant;
-    double posGot;
-    double velError;
-    double velWant;
-    double velGot;
-
-    String posData;
-    String velData;
 
     // Camera clock sync checking thread
 	public static Object grabber;
@@ -91,8 +74,8 @@ public class Robot extends TimedRobot {
         LiveWindow.disableAllTelemetry();
 
         // Init Cannons
-        leftCannon = new Cannon(Constants.kLeftCannonModule, Constants.kLeftCannonChannel);
-        rightCannon = new Cannon(Constants.kRightCannonModule, Constants.kRightCannonChannel);
+        leftCannon = new Cannon(Constants.kLeftCannonChannel);
+        rightCannon = new Cannon(Constants.kRightCannonChannel);
 
         anglePistons = new AnglePistons();
     }
@@ -122,24 +105,9 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void autonomousInit() {
-        
-    }
-
-    /**
-     * This function is called periodically during autonomous.
-     */
-    @Override
-    public void autonomousPeriodic() {
-        oi.updatePeriodicCommands();
-        Scheduler.getInstance().run();
-        
-    }
-
-    @Override
     public void teleopInit() {
         // System.out.println("Shooting left..");
-        leftCannon.setOpen(true);
+        // leftCannon.setOpen(true);
         // System.out.println("Open");
         // Timer.delay(0.2); //! WAS 0.3
         // System.out.println("Wait");
@@ -152,7 +120,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        leftCannon.setOpen(true);
         oi.updatePeriodicCommands();
         Scheduler.getInstance().run();
     }
@@ -164,14 +131,6 @@ public class Robot extends TimedRobot {
     public void testPeriodic() {
     }
 
-    /**
-     * Get the current heading of the robot in radians
-     * 
-     * @return the current robot heading in radians from -pi to pi
-     */
-    public static double getAngleRad() {
-        return MathHelper.angleToNegPiToPi(Math.toRadians(Robot.gyro.getYaw()));
-    }
 
     /**
      * Gets the current time in seconds
@@ -181,17 +140,6 @@ public class Robot extends TimedRobot {
     public static double getCurrentTime() {
         return Timer.getFPGATimestamp();
     }
-
-    /**
-     * Returns true if the robot is currently in the end game period
-     */
-    public static boolean isEndGame() {
-        return DriverStation.getInstance().isOperatorControl() && DriverStation.getInstance().getMatchTime() < 30;
-    }
-
-    /**
-     * Resyncs clocks if needed
-     */
 
     /**
      * Sends important values like the match time and the heartbeat value to the

@@ -122,13 +122,9 @@ public class OI {
                 }
                 case 90: { //*RIGHT
                     if (controllerMode == ControllerMapMode.FIRE) {
-                        System.out.println("Shooting right..");
-                        Robot.rightCannon.setOpen(true);
-                        System.out.println("Open");
-                        // Timer.delay(0.2); //! WAS 0.3
-                        System.out.println("Wait");
+                        Robot.rightCannon.setOpen(true); //? PCM ID MUST BE '0'
+                        Timer.delay(0.2); //! WAS 0.3
                         Robot.rightCannon.setOpen(false);
-                        System.out.println("Close");
                         controllerMode = ControllerMapMode.LOCKED;
                     } else {
                         System.out.println("Can't fire. Controller locked");
@@ -141,13 +137,9 @@ public class OI {
                 }
                 case 270: { //*LEFT
                     if (controllerMode == ControllerMapMode.FIRE) {
-                        System.out.println("Shooting left..");
-                        Robot.leftCannon.setOpen(true);
-                        System.out.println("Open");
-                        // Timer.delay(0.2); //! WAS 0.3
-                        System.out.println("Wait");
+                        Robot.leftCannon.setOpen(true); //? PCM ID MUST BE '0'
+                        Timer.delay(0.2); //! WAS 0.3
                         Robot.leftCannon.setOpen(false);
-                        System.out.println("Close");
                         controllerMode = ControllerMapMode.LOCKED;
                     } else {
                         System.out.println("Can't fire. Controller locked");

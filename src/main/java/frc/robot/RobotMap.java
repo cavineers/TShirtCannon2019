@@ -20,7 +20,7 @@ public class RobotMap {
   public static int leftDriveMotor2  = 2; //talon (cim) (40A)
 
   //pneumatics:
-  public static int PCM1 = 20;
+  public static int PCM1 = 0; //! PCM ID MUST BE '0'
 
   public static int PDP = 10;
 }
